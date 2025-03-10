@@ -284,3 +284,41 @@ mon addr = 172.31.4.54
 mon allow pool delete = true
 
 ```
+
+### Installing ceph package in all the data node (OSD)
+
+```
+dnf -y install centos-release-ceph-reef epel-release 
+dnf install ceph -y 
+
+```
+
+### Now copy ceph.conf from monitor node to all data nodes (OSD)
+
+```
+[root@ashu-mon ceph]# scp  /etc/ceph/ceph.conf   ashu-node1:/etc/ceph/
+ceph.conf                                                                                                  100%  646   369.6KB/s   00:00    
+[root@ashu-mon ceph]# scp  /etc/ceph/ceph.conf   ashu-node2:/etc/ceph/
+ceph.conf                                                                                                  100%  646   994.9KB/s   00:00    
+[root@ashu-mon ceph]# 
+
+
+```
+
+### concepts views 
+
+<img src="v1.png">
+
+### Generating Cluster Monitor keys 
+
+```
+ ceph-authtool   --create-keyring   /etc/ceph/ceph.mon.keyring  --gen-key -n mon. --cap mon 'allow *' 
+creating /etc/ceph/ceph.mon.keyring
+[root@ashu-mon ceph]# ls  /etc/ceph/
+ceph.conf  ceph.mon.keyring  rbdmap
+[root@ashu-mon ceph]# ls -l /etc/ceph/ceph.mon.keyring 
+-rw-------. 1 root root 77 Mar 10 12:32 /etc/ceph/ceph.mon.keyring
+[root@ashu-mon ceph]# 
+[root@ashu-mon ceph]# 
+
+```
