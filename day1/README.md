@@ -157,3 +157,82 @@ root@ashu-node2's password:
 [root@ashu-node2 ~]# 
 
 ```
+
+### generating ssh-keypair for password less auth on ashu-mon node
+
+```
+ssh-keygen 
+Generating public/private rsa key pair.
+Enter file in which to save the key (/root/.ssh/id_rsa): 
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in /root/.ssh/id_rsa
+Your public key has been saved in /root/.ssh/id_rsa.pub
+The key fingerprint is:
+SHA256:ti1RdLlbC+zcw0aoIAlRWgVNbu6fqk7gA4pcgNpounE root@ashu-mon
+The key's randomart image is:
++---[RSA 3072]----+
+|    .o+=o . ..   |
+|.   .o ... ..    |
+|..  .. .o .. o   |
+|.o.   oo..  = o  |
+|o.o..  .S. + B . |
+|=..o . o +. + *  |
+|=.E o . + .  . . |
+| +   o   o .     |
+|.    .o...o      |
++----[SHA256]-----+
+
+```
+
+### transfering public key to other OSD nodes
+
+```
+[root@ashu-mon ~]# ssh-copy-id    ashu-node1 
+/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/root/.ssh/id_rsa.pub"
+/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+root@ashu-node1's password: 
+
+Number of key(s) added: 1
+
+Now try logging into the machine, with:   "ssh 'ashu-node1'"
+and check to make sure that only the key(s) you wanted were added.
+
+[root@ashu-mon ~]# ssh-copy-id    ashu-node2
+/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/root/.ssh/id_rsa.pub"
+/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+root@ashu-node2's password: 
+
+Number of key(s) added: 1
+
+Now try logging into the machine, with:   "ssh 'ashu-node2'"
+and check to make sure that only the key(s) you wanted were added.
+
+[root@ashu-mon ~]# 
+
+```
+
+## Installing EPEL and REEF for ceph installation 
+
+```
+dnf -y install centos-release-ceph-reef epel-release 
+
+Last metadata expiration check: 2:16:01 ago on Mon 10 Mar 2025 09:12:19 AM UTC.
+Dependencies resolved.
+
+
+===> verify this 
+
+[root@ashu-mon ~]# cd /etc/yum.repos.d/
+[root@ashu-mon yum.repos.d]# ls
+centos-addons.repo     centos.repo                 epel-cisco-openh264.repo  epel-next-testing.repo  epel-testing.repo
+CentOS-Ceph-Reef.repo  CentOS-Storage-common.repo  epel-next.repo            epel.repo
+[root@ashu-mon yum.repos.d]# 
+
+===> Installing Ceph 
+
+ dnf install ceph -y
+
+```
