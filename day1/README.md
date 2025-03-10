@@ -354,3 +354,14 @@ importing contents of /var/lib/ceph/bootstrap-osd/ceph.keyring into /etc/ceph/ce
 
 ```
 
+### Creating monitoring map which gonna use by CRUSH 
+
+```
+[root@ashu-mon ~]# monmaptool   --create --add  ashu-mon  172.31.4.54   --fsid   73126190-66a0-425d-bc7b-971b13e67210  /etc/ceph/monmap 
+monmaptool: monmap file /etc/ceph/monmap
+setting min_mon_release = pacific
+monmaptool: set fsid to 73126190-66a0-425d-bc7b-971b13e67210
+monmaptool: writing epoch 0 to /etc/ceph/monmap (1 monitors)
+[root@ashu-mon ~]# 
+
+```
