@@ -364,4 +364,29 @@ monmaptool: set fsid to 73126190-66a0-425d-bc7b-971b13e67210
 monmaptool: writing epoch 0 to /etc/ceph/monmap (1 monitors)
 [root@ashu-mon ~]# 
 
+===>> Enable the persistent storage for monitoring data 
+
+[root@ashu-mon ~]# cd  /var/lib/ceph
+ceph/    cephadm/ 
+[root@ashu-mon ~]# cd  /var/lib/ceph
+[root@ashu-mon ceph]# ls
+bootstrap-mds  bootstrap-mgr  bootstrap-osd  bootstrap-rbd  bootstrap-rbd-mirror  bootstrap-rgw  crash  mds  mgr  mon  osd  tmp
+[root@ashu-mon ceph]# ls  mon/
+[root@ashu-mon ceph]# cd /var/lib/ceph/mon/
+[root@ashu-mon mon]# ls
+[root@ashu-mon mon]# mkdir  ashu-mon 
+[root@ashu-mon mon]# ls
+ashu-mon
+[root@ashu-mon mon]# ceph-mon --cluster ceph --mkfs -i  ashu-mon  --monmap /etc/ceph/monmap  --keyring /etc/ceph/ceph.mon.keyring 
+[root@ashu-mon mon]# ls
+ashu-mon  ceph-ashu-mon
+[root@ashu-mon mon]# grep -i ceph /etc/passwd
+ceph:x:167:167:Ceph daemons:/var/lib/ceph:/sbin/nologin
+cephadm:x:995:995:cephadm user for mgr/cephadm:/var/lib/cephadm:/bin/bash
+[root@ashu-mon mon]# chown ceph:ceph /etc/ceph/ceph.*
+[root@ashu-mon mon]# chown -R ceph:ceph /var/lib/ceph/mon/ashu-mon/  /var/lib/ceph/bootstrap-osd 
+[root@ashu-mon mon]# 
+
+
+
 ```
