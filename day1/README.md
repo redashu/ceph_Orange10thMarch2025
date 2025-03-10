@@ -82,3 +82,44 @@ ashu-mon
 172.31.9.143   ashu-node2
 
 ```
+
+### changing selinux security to permissive mode 
+
+```
+[root@ashu-mon sshd_config.d]# cat  /etc/selinux/config 
+
+# This file controls the state of SELinux on the system.
+# SELINUX= can take one of these three values:
+#     enforcing - SELinux security policy is enforced.
+#     permissive - SELinux prints warnings instead of enforcing.
+#     disabled - No SELinux policy is loaded.
+# See also:
+# https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/using_selinux/changing-selinux-states-and-modes_using-selinux#changing-selinux-modes-at-boot-time_changing-selinux-states-and-modes
+#
+# NOTE: Up to RHEL 8 release included, SELINUX=disabled would also
+# fully disable SELinux during boot. If you need a system with SELinux
+# fully disabled instead of SELinux running with no policy loaded, you
+# need to pass selinux=0 to the kernel command line. You can use grubby
+# to persistently set the bootloader to boot with selinux=0:
+#
+#    grubby --update-kernel ALL --args selinux=0
+#
+# To revert back to SELinux enabled:
+#
+#    grubby --update-kernel ALL --remove-args selinux
+#
+SELINUX=permissive
+
+```
+
+### above file changes need a restart so we are doing it 
+
+```
+[root@ashu-mon sshd_config.d]# getenforce 
+Enforcing
+[root@ashu-mon sshd_config.d]# setenforce  0
+[root@ashu-mon sshd_config.d]# 
+[root@ashu-mon sshd_config.d]# getenforce 
+Permissive
+
+```
