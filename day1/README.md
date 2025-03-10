@@ -331,3 +331,26 @@ creating /etc/ceph/ceph.client.admin.keyring
 
 ```
 
+### creating bootstraping purpose key 
+
+```
+ ceph-authtool --create-keyring /var/lib/ceph/bootstrap-osd/ceph.keyring --gen-key -n client.bootstrap-osd --cap mon 'profile bootstrap-osd' --cap mgr 'allow r'
+
+creating /var/lib/ceph/bootstrap-osd/ceph.keyring
+
+```
+
+### importing keys 
+
+```
+[root@ashu-mon ceph]# ceph-authtool /etc/ceph/ceph.mon.keyring --import-keyring /etc/ceph/ceph.client.admin.keyring
+
+importing contents of /etc/ceph/ceph.client.admin.keyring into /etc/ceph/ceph.mon.keyring
+[root@ashu-mon ceph]# ceph-authtool /etc/ceph/ceph.mon.keyring --import-keyring /var/lib/ceph/bootstrap-osd/ceph.keyring
+
+
+importing contents of /var/lib/ceph/bootstrap-osd/ceph.keyring into /etc/ceph/ceph.mon.keyring
+[root@ashu-mon ceph]# 
+
+```
+
