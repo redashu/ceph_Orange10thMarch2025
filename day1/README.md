@@ -254,3 +254,33 @@ osd pool default crush rule = -1
 fsid = 73126190-66a0-425d-bc7b-971b13e67210 
 
 ```
+
+### final ceph.conf file on monitor node 
+
+```
+[global]
+# these are optional 
+cluster network =  172.31.0.0/20
+public network =  172.31.0.0/20 
+
+# ip address of monitor host 
+mon host = 172.31.4.54
+# hostname of monitor initator node 
+mon initial members = ashu-mon  
+osd pool default crush rule = -1
+# file system id 
+fsid = 73126190-66a0-425d-bc7b-971b13e67210 
+
+# about all monitoring nodes we gonna write info here 
+# generally there is no auto scaling recomdended in monitoring nodes 
+#
+# mon.(Node name)
+[mon.ashu-mon]
+# specify Hostname of Monitor Daemon
+host = ashu-mon
+# specify IP address of Monitor Daemon
+mon addr = 172.31.4.54
+# allow to delete pools
+mon allow pool delete = true
+
+```
