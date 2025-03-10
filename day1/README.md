@@ -322,3 +322,12 @@ ceph.conf  ceph.mon.keyring  rbdmap
 [root@ashu-mon ceph]# 
 
 ```
+
+### Generating keys for administration api calls usage purpose 
+
+```
+ ceph-authtool --create-keyring /etc/ceph/ceph.client.admin.keyring --gen-key -n client.admin --cap mon 'allow *' --cap osd 'allow *' --cap mds 'allow *' --cap mgr 'allow *'
+creating /etc/ceph/ceph.client.admin.keyring
+
+```
+
