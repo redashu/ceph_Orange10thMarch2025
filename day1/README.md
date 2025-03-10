@@ -374,7 +374,7 @@ bootstrap-mds  bootstrap-mgr  bootstrap-osd  bootstrap-rbd  bootstrap-rbd-mirror
 [root@ashu-mon ceph]# ls  mon/
 [root@ashu-mon ceph]# cd /var/lib/ceph/mon/
 [root@ashu-mon mon]# ls
-[root@ashu-mon mon]# mkdir  ashu-mon 
+[root@ashu-mon mon]# mkdir  ceph-ashu-mon 
 [root@ashu-mon mon]# ls
 ashu-mon
 [root@ashu-mon mon]# ceph-mon --cluster ceph --mkfs -i  ashu-mon  --monmap /etc/ceph/monmap  --keyring /etc/ceph/ceph.mon.keyring 
@@ -384,9 +384,41 @@ ashu-mon  ceph-ashu-mon
 ceph:x:167:167:Ceph daemons:/var/lib/ceph:/sbin/nologin
 cephadm:x:995:995:cephadm user for mgr/cephadm:/var/lib/cephadm:/bin/bash
 [root@ashu-mon mon]# chown ceph:ceph /etc/ceph/ceph.*
-[root@ashu-mon mon]# chown -R ceph:ceph /var/lib/ceph/mon/ashu-mon/  /var/lib/ceph/bootstrap-osd 
+[root@ashu-mon mon]# chown -R ceph:ceph /var/lib/ceph/mon/ceph-ashu-mon/  /var/lib/ceph/bootstrap-osd 
 [root@ashu-mon mon]# 
 
 
+```
 
+### starting service 
+
+```
+ 72  systemctl enable --now  ceph-mon@ashu-mon 
+   73  systemctl status   ceph-mon@ashu-mon 
+   74  history 
+
+```
+
+
+### to configure OSF we need to transfer few details 
+
+<img src="tools1.png">
+
+### transfer data
+
+```
+[root@ashu-mon ~]# scp  /etc/ceph/ceph.client.admin.keyring   ashu-node1:/etc/ceph/
+ceph.client.admin.keyring                                                                                  100%  151   103.9KB/s   00:00    
+[root@ashu-mon ~]# scp  /var/lib/ceph/bootstrap-osd/ceph.keyring   ashu-node1:/var/lib/ceph/bootstrap-osd/
+ceph.keyring                                                                                               100%  129    99.8KB/s   00:00    
+[root@ashu-mon ~]# 
+[root@ashu-mon ~]# scp  /var/lib/ceph/bootstrap-osd/ceph.keyring   ashu-node2:/var/lib/ceph/bootstrap-osd/
+ceph.keyring                                                                                               100%  129   307.5KB/s   00:00    
+[root@ashu-mon ~]# 
+[root@ashu-mon ~]# scp  /etc/ceph/ceph.client.admin.keyring   ashu-node2:/etc/ceph/
+ceph.client.admin.keyring                                                                                  100%  151   194.8KB/s   00:00    
+[root@ashu-mon ~]# 
+
+
+chown ceph:ceph /etc/ceph/ceph.* /var/lib/ceph/bootstrap-osd/*
 ```
