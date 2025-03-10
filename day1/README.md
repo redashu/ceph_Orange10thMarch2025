@@ -236,3 +236,21 @@ CentOS-Ceph-Reef.repo  CentOS-Storage-common.repo  epel-next.repo            epe
  dnf install ceph -y
 
 ```
+
+### ceph.conf 
+
+```
+[global]
+# these are optional 
+cluster network =  172.31.0.0/20
+public network =  172.31.0.0/20 
+
+# ip address of monitor host 
+mon host = 172.31.4.54
+# hostname of monitor initator node 
+mon initial members = ashu-mon1  
+osd pool default crush rule = -1
+# file system id 
+fsid = 73126190-66a0-425d-bc7b-971b13e67210 
+
+```
