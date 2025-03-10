@@ -123,3 +123,37 @@ Enforcing
 Permissive
 
 ```
+
+### verify connection of ssh with root user from ashu-mon to osd nodes
+
+```
+[root@ashu-mon ~]# cat  /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+
+
+172.31.4.54   ashu-mon 
+172.31.10.59   ashu-node1
+172.31.9.143   ashu-node2
+[root@ashu-mon ~]# whoami 
+root
+[root@ashu-mon ~]# ssh  ashu-node1  
+The authenticity of host 'ashu-node1 (172.31.10.59)' can't be established.
+ED25519 key fingerprint is SHA256:El0WcNO3MtY0/nv4OdeVstAkDuc9HO6QXgscgu+AlqI.
+This key is not known by any other names
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added 'ashu-node1' (ED25519) to the list of known hosts.
+root@ashu-node1's password: 
+[root@ashu-node1 ~]# exit
+logout
+Connection to ashu-node1 closed.
+[root@ashu-mon ~]# ssh  ashu-node2
+The authenticity of host 'ashu-node2 (172.31.9.143)' can't be established.
+ED25519 key fingerprint is SHA256:yql0hOr67Tgm2fADHo6mHskcaaarJX9V7Z7Hq9hi/Yw.
+This key is not known by any other names
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added 'ashu-node2' (ED25519) to the list of known hosts.
+root@ashu-node2's password: 
+[root@ashu-node2 ~]# 
+
+```
