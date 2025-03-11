@@ -136,3 +136,59 @@ ceph-volume  lvm list
 
 <img src="mon22.png">
 
+## ON OSD 
+
+### steps
+i) we have disk  (use or do partitions)
+ii) creating lvm using ceph-volume 
+iii)  activating lvm (if required) systemctl status ceph-osd@1
+
+### checking OSD details 
+
+```
+[root@ashu-node2 ~]# ceph osd stat
+2 osds: 2 up (since 54s), 2 in (since 54s); epoch: e12
+[root@ashu-node2 ~]# ceph osd tree
+ID  CLASS  WEIGHT   TYPE NAME            STATUS  REWEIGHT  PRI-AFF
+-1         0.09760  root default                                  
+-3         0.04880      host ashu-node1                           
+ 1    ssd  0.04880          osd.1            up   1.00000  1.00000
+-5         0.04880      host ashu-node2                           
+ 0    ssd  0.04880          osd.0            up   1.00000  1.00000
+
+ ```
+
+ ### Creating pool and checking replica
+
+ ```
+ [root@ashu-mon ~]# ceph osd  lspools 
+[root@ashu-mon ~]# 
+[root@ashu-mon ~]# 
+[root@ashu-mon ~]# ceph osd  pool create ashu_pool1  128 
+pool 'ashu_pool1' created
+[root@ashu-mon ~]# ceph osd  lspools 
+1 ashu_pool1
+[root@ashu-mon ~]# ceph osd  pool get  ashu_pool1 size 
+size: 3
+[root@ashu-mon ~]# 
+
+
+```
+### Initial as this pool to block device pool
+
+```
+rbd  pool init ashu_pool1
+
+```
+
+### checking placement group in a pool
+
+```
+[root@ashu-mon ~]# ceph osd lspools
+1 ashu_pool1
+[root@ashu-mon ~]# 
+[root@ashu-mon ~]# ceph osd pool  get ashu_pool1  pg_num 
+pg_num: 128
+[root@ashu-mon ~]# 
+
+```
