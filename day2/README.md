@@ -424,3 +424,43 @@ id  pool        namespace  image       snap  device
 0   ashu_pool1             ashu_part1  -     /dev/rbd0
 
 ```
+
+## Monitor activities and more we can enable manager service 
+
+```
+204  ceph mon enable-msgr2
+  205  ceph config set mon auth_allow_insecure_global_id_reclaim false
+  206  ceph mgr module enable pg_autoscaler
+  207  mkdir /var/lib/ceph/mgr/ceph-ashu-mon 
+  208  ls /var/lib/ceph
+  209  ceph auth get-or-create mgr.ashu-mon  mon 'allow profile mgr' osd 'allow *' mds 'allow *'
+  210  ceph auth get-or-create mgr.ashu-mon  > /etc/ceph/ceph.mgr.admin.keyring
+  211  cp /etc/ceph/ceph.mgr.admin.keyring /var/lib/ceph/mgr/ceph-ashu-mon/keyring
+  212  chown ceph:ceph /etc/ceph/ceph.mgr.admin.keyring
+  213  chown -R ceph:ceph /var/lib/ceph/mgr/ceph-ashu-mon/
+  214  systemctl enable --now ceph-mgr@ashu-mon 
+  215  systemctl status  ceph-mgr@ashu-mon 
+  216  history 
+[root@ashu-mon ceph]# ceph -s
+  cluster:
+    id:     73126190-66a0-425d-bc7b-971b13e67210
+    health: HEALTH_WARN
+            Degraded data redundancy: 21/63 objects degraded (33.333%), 18 pgs degraded, 128 pgs undersized
+            OSD count 2 < osd_pool_default_size 3
+ 
+  services:
+    mon: 1 daemons, quorum ashu-mon (age 3m)
+    mgr: ashu-mon(active, since 15s)
+    osd: 2 osds: 2 up (since 2h), 2 in (since 2h)
+ 
+  data:
+    pools:   1 pools, 128 pgs
+    objects: 21 objects, 33 MiB
+    usage:   58 MiB used, 100 GiB / 100 GiB avail
+    pgs:     21/63 objects degraded (33.333%)
+             110 active+undersized
+             18  active+undersized+degraded
+
+```
+
+## Note: manager can be along with monitor or outside as well
