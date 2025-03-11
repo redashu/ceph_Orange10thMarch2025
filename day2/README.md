@@ -350,3 +350,68 @@ UUID=1ba38c21-a870-4f86-b09d-c70a929511b2 /                       xfs     defaul
 UUID="cf0416fb-87e1-43d9-8a57-ae594a67431c"      /mnt/ashu        xfs  _netdev 0  0 
 
 ```
+### TO load rbdmap device there are 2 approaches 
+
+# method 1 -- linux kernel way 
+
+```
+[root@ip-172-31-0-33 ~]# chmod +x /etc/rc.local 
+[root@ip-172-31-0-33 ~]# cat  /etc/rc.local 
+#!/bin/bash
+# THIS FILE IS ADDED FOR COMPATIBILITY PURPOSES
+#
+# It is highly advisable to create own systemd services or udev rules
+# to run scripts during boot instead of using this file.
+#
+# In contrast to previous versions due to parallel execution during boot
+# this script will NOT be run after all other services.
+#
+# Please note that you must run 'chmod +x /etc/rc.d/rc.local' to ensure
+# that this script will be executed during boot.
+
+touch /var/lock/subsys/local
+
+rbd map ashu_pool1/ashu_part1
+
+```
+
+### method 2  -- ceph way 
+
+```
+[root@ip-172-31-0-33 ~]# # method 2 
+[root@ip-172-31-0-33 ~]# echo "rbd"  | tee -a /etc/modules 
+rbd
+[root@ip-172-31-0-33 ~]# vim /etc/ceph/rbdmap 
+[root@ip-172-31-0-33 ~]# ls  /etc/ceph/ceph.client.admin.keyring 
+/etc/ceph/ceph.client.admin.keyring
+[root@ip-172-31-0-33 ~]# vim /etc/ceph/rbdmap 
+[root@ip-172-31-0-33 ~]# 
+[root@ip-172-31-0-33 ~]# cat /etc/ceph/rbdmap 
+# RbdDevice		Parameters
+#poolname/imagename	id=client,keyring=/etc/ceph/ceph.client.keyring
+ashu_pool1/ashu_part1	id=admin,keyring=/etc/ceph/ceph.client.admin.keyring 
+[root@ip-172-31-0-33 ~]# 
+[root@ip-172-31-0-33 ~]# 
+[root@ip-172-31-0-33 ~]# systemctl status rbdmap 
+○ rbdmap.service - Map RBD devices
+     Loaded: loaded (/usr/lib/systemd/system/rbdmap.service; disabled; preset: disabled)
+     Active: inactive (dead)
+[root@ip-172-31-0-33 ~]# systemctl start rbdmap 
+[root@ip-172-31-0-33 ~]# systemctl status rbdmap 
+● rbdmap.service - Map RBD devices
+     Loaded: loaded (/usr/lib/systemd/system/rbdmap.service; disabled; preset: disabled)
+     Active: active (exited) since Tue 2025-03-11 11:58:01 UTC; 1s ago
+    Process: 4274 ExecStart=/usr/bin/rbdmap map (code=exited, status=0/SUCCESS)
+   Main PID: 4274 (code=exited, status=0/SUCCESS)
+        CPU: 10ms
+
+Mar 11 11:58:01 ip-172-31-0-33.us-east-2.compute.internal systemd[1]: Starting Map RBD devices...
+Mar 11 11:58:01 ip-172-31-0-33.us-east-2.compute.internal rbdmap[4276]: Mapping 'ashu_pool1/ashu_part1'
+Mar 11 11:58:01 ip-172-31-0-33.us-east-2.compute.internal rbdmap[4278]: Mapped 'ashu_pool1/ashu_part1' to '/dev/rbd0'
+Mar 11 11:58:01 ip-172-31-0-33.us-east-2.compute.internal systemd[1]: Finished Map RBD devices.
+[root@ip-172-31-0-33 ~]# systemctl enable  rbdmap 
+Created symlink /etc/systemd/system/multi-user.target.wants/rbdmap.service → /usr/lib/systemd/system/rbdmap.service.
+[root@ip-172-31-0-33 ~]# 
+
+```
+
