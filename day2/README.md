@@ -274,3 +274,79 @@ total 12K
    14  rbd ls ashu_pool1
    15  rbd info  ashu_pool1/ashu_part1
 ```
+
+### mapping block device to client 
+
+```
+[root@ip-172-31-0-33 ceph]# lsblk 
+NAME    MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS
+xvda    202:0    0  10G  0 disk 
+├─xvda1 202:1    0   1M  0 part 
+└─xvda2 202:2    0  10G  0 part /
+[root@ip-172-31-0-33 ceph]# rbd map ashu_pool1/ashu_part1  
+/dev/rbd0
+[root@ip-172-31-0-33 ceph]# lsblk 
+NAME    MAJ:MIN RM SIZE RO TYPE MOUNTPOINTS
+xvda    202:0    0  10G  0 disk 
+├─xvda1 202:1    0   1M  0 part 
+└─xvda2 202:2    0  10G  0 part /
+rbd0    252:0    0   5G  0 disk 
+
+```
+
+### Format and mounting device permanently 
+
+```
+ 23  mkfs.xfs    /dev/rbd0 
+   24  mkdir  /mnt/ashu
+   25  mount  /dev/rbd0   /mnt/ashu/
+   26  df -hT
+   27  vim /etc/fstab 
+   28  dnf install vim -y
+   29  history 
+[root@ip-172-31-0-33 ceph]# df -hT
+Filesystem     Type      Size  Used Avail Use% Mounted on
+devtmpfs       devtmpfs  4.0M     0  4.0M   0% /dev
+tmpfs          tmpfs     885M     0  885M   0% /dev/shm
+tmpfs          tmpfs     354M  9.4M  345M   3% /run
+/dev/xvda2     xfs        10G  1.5G  8.6G  15% /
+tmpfs          tmpfs     177M     0  177M   0% /run/user/1000
+/dev/rbd0      xfs       5.0G   68M  4.9G   2% /mnt/ashu
+[root@ip-172-31-0-33 ceph]# vim /etc/fstab 
+[root@ip-172-31-0-33 ceph]# cat  /etc/fstab 
+
+#
+# /etc/fstab
+# Created by anaconda on Mon Mar  3 04:11:47 2025
+#
+# Accessible filesystems, by reference, are maintained under '/dev/disk/'.
+# See man pages fstab(5), findfs(8), mount(8) and/or blkid(8) for more info.
+#
+# After editing this file, run 'systemctl daemon-reload' to update systemd
+# units generated from this file.
+#
+UUID=1ba38c21-a870-4f86-b09d-c70a929511b2 /                       xfs     defaults        0 0
+
+/dev/rbd0      /mnt/ashu        xfs  _netdev 0  0 
+[root@ip-172-31-0-33 ceph]# blkid 
+/dev/xvda2: UUID="1ba38c21-a870-4f86-b09d-c70a929511b2" TYPE="xfs" PARTUUID="189caf23-e42e-4c9b-aea4-157b24c9af45"
+/dev/rbd0: UUID="cf0416fb-87e1-43d9-8a57-ae594a67431c" TYPE="xfs"
+/dev/xvda1: PARTUUID="5946971f-6ca7-4c20-a19e-253ef9bf8966"
+[root@ip-172-31-0-33 ceph]# vim /etc/fstab 
+[root@ip-172-31-0-33 ceph]# cat  /etc/fstab 
+
+#
+# /etc/fstab
+# Created by anaconda on Mon Mar  3 04:11:47 2025
+#
+# Accessible filesystems, by reference, are maintained under '/dev/disk/'.
+# See man pages fstab(5), findfs(8), mount(8) and/or blkid(8) for more info.
+#
+# After editing this file, run 'systemctl daemon-reload' to update systemd
+# units generated from this file.
+#
+UUID=1ba38c21-a870-4f86-b09d-c70a929511b2 /                       xfs     defaults        0 0
+
+UUID="cf0416fb-87e1-43d9-8a57-ae594a67431c"      /mnt/ashu        xfs  _netdev 0  0 
+
+```
