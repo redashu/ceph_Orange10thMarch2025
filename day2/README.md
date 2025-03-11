@@ -415,3 +415,12 @@ Created symlink /etc/systemd/system/multi-user.target.wants/rbdmap.service → /
 
 ```
 
+
+### alternative to lsblk in ceph 
+
+```
+[root@ip-172-31-0-33 ~]# rbd showmapped
+id  pool        namespace  image       snap  device   
+0   ashu_pool1             ashu_part1  -     /dev/rbd0
+
+```
