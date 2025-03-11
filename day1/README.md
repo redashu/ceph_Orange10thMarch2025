@@ -422,3 +422,8 @@ ceph.client.admin.keyring                                                       
 
 chown ceph:ceph /etc/ceph/ceph.* /var/lib/ceph/bootstrap-osd/*
 ```
+
+### you can study about that 
+
+<img src="std1.png">
+
