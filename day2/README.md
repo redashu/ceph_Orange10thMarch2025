@@ -216,5 +216,22 @@ ashu_part1
 ashu_part2
 [root@ashu-mon ~]# RDB ceph -- using LVM thin provisioning to over commit the size 
 
+===> info 
+
+[root@ashu-mon ~]# rbd  info   ashu_pool1/ashu_part1
+rbd image 'ashu_part1':
+	size 5 GiB in 1280 objects
+	order 22 (4 MiB objects)
+	snapshot_count: 0
+	id: 3758bc338315
+	block_name_prefix: rbd_data.3758bc338315
+	format: 2
+	features: layering, exclusive-lock, object-map, fast-diff, deep-flatten
+	op_features: 
+	flags: 
+	create_timestamp: Tue Mar 11 10:07:44 2025
+	access_timestamp: Tue Mar 11 10:07:44 2025
+	modify_timestamp: Tue Mar 11 10:07:44 2025
+
 ```
 
