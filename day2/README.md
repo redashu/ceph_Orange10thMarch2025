@@ -476,3 +476,7 @@ id  pool        namespace  image       snap  device
 ### openstack with ceph usage example of swift 
 
 <img src="cephs3.png">
+
+### ceph with k8s 
+
+<img src="cephs4.png">
