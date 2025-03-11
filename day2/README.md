@@ -235,3 +235,42 @@ rbd image 'ashu_part1':
 
 ```
 
+### Getting ready with CEPH client 
+
+```
+dnf -y install centos-release-ceph-reef epel-release 
+dnf install ceph-common  -y 
+
+## Download Monitor and client key details 
+
+[root@ip-172-31-0-33 ~]# cd /etc/ceph/
+[root@ip-172-31-0-33 ceph]# ls
+rbdmap
+[root@ip-172-31-0-33 ceph]# scp  172.31.4.54:/etc/ceph/ceph.conf  /etc/ceph/
+The authenticity of host '172.31.4.54 (172.31.4.54)' can't be established.
+ED25519 key fingerprint is SHA256:JdD6/h2vnpW3Wzhlg6/WMaGRzJsiZOVITSuX0wPZxkA.
+This key is not known by any other names
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '172.31.4.54' (ED25519) to the list of known hosts.
+root@172.31.4.54's password: 
+ceph.conf                                                                                                  100%  646   335.6KB/s   00:00    
+[root@ip-172-31-0-33 ceph]# scp  172.31.4.54:/etc/ceph/ceph.client.admin.keyring  /etc/ceph/
+root@172.31.4.54's password: 
+ceph.client.admin.keyring                                                                                  100%  151    58.1KB/s   00:00    
+[root@ip-172-31-0-33 ceph]# ls
+ceph.client.admin.keyring  ceph.conf  rbdmap
+[root@ip-172-31-0-33 ceph]# ls -lh 
+total 12K
+-rw-------. 1 root root 151 Mar 11 11:26 ceph.client.admin.keyring
+-rw-r--r--. 1 root root 646 Mar 11 11:26 ceph.conf
+-rw-r--r--. 1 root root  92 Sep 23 17:01 rbdmap
+[root@ip-172-31-0-33 ceph]#  
+
+====>
+  10   chown ceph:ceph  ceph.* 
+   11  ls -l 
+   12  ceph -s
+   13  ceph osd lspools 
+   14  rbd ls ashu_pool1
+   15  rbd info  ashu_pool1/ashu_part1
+```
