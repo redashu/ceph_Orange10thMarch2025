@@ -464,3 +464,15 @@ id  pool        namespace  image       snap  device
 ```
 
 ## Note: manager can be along with monitor or outside as well
+
+### Client mapping ceph storage device 
+
+<img src="cephs1.png">
+
+## Ceph with Openstack / k8s / openshift container platform 
+
+<img src="cephs2.png">
+
+### openstack with ceph usage example of swift 
+
+<img src="cephs3.png">
