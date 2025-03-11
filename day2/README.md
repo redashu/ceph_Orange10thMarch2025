@@ -192,3 +192,29 @@ pg_num: 128
 [root@ashu-mon ~]# 
 
 ```
+
+### Creating block device parts inside Pool 
+
+```
+[root@ashu-mon ~]# ceph osd pool  get ashu_pool1  pg_num 
+pg_num: 128
+[root@ashu-mon ~]# ceph osd lspools 
+1 ashu_pool1
+[root@ashu-mon ~]# rbd  create  --size 5G  ashu_pool1/ashu_part1 
+[root@ashu-mon ~]# rbd  ls  ashu_pool1
+ashu_part1
+[root@ashu-mon ~]# 
+[root@ashu-mon ~]# rbd  create  --size 15G  ashu_pool1/ashu_part2 
+[root@ashu-mon ~]# rbd  ls  ashu_pool1
+ashu_part1
+ashu_part2
+[root@ashu-mon ~]# rbd  create  --size 150G  ashu_pool1/ashu_os_disk 
+[root@ashu-mon ~]# 
+[root@ashu-mon ~]# rbd  ls  ashu_pool1
+ashu_os_disk
+ashu_part1
+ashu_part2
+[root@ashu-mon ~]# RDB ceph -- using LVM thin provisioning to over commit the size 
+
+```
+
