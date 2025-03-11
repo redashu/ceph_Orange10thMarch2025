@@ -84,3 +84,55 @@ Calling ioctl() to re-read partition table.
 Syncing disks.
 
 ```
+
+### On each OSD prepare a disk using LVM 
+
+```
+ceph-volume  lvm prepare  --data  /dev/xvdb1 
+Running command: /usr/bin/ceph-authtool --gen-print-key
+Running command: /usr/bin/ceph --cluster ceph --name client.bootstrap-osd --keyring /var/lib/ceph/bootstrap-osd/ceph.keyring -i - osd new 22e145cd-c5d2-44bd-892e-f4bcf148b1aa
+Running command: vgcreate --force --yes ceph-0dd2afb0-26a1-49a9-8e24-2d22be59184f /dev/xvdb1
+ stdout: Physical volume "/dev/xvdb1" successfully created.
+  Creating devices file /etc/lvm/devices/system.devices
+ stdout: Volume group "ceph-0dd2afb0-26a1-49a9-8e24-2d22be59184f" successfully created
+Running command: lvcreate --yes -l 12799 -n osd-block-
+
+
+====>
+ceph-volume  lvm create    --data  /dev/xvdb1 
+```
+
+### listing lvm 
+
+```
+ceph-volume  lvm list
+
+
+====== osd.0 =======
+
+  [block]       /dev/ceph-0dd2afb0-26a1-49a9-8e24-2d22be59184f/osd-block-22e145cd-c5d2-44bd-892e-f4bcf148b1aa
+
+      block device              /dev/ceph-0dd2afb0-26a1-49a9-8e24-2d22be59184f/osd-block-22e145cd-c5d2-44bd-892e-f4bcf148b1aa
+      block uuid                e4Gb3F-Uw75-OSqr-ty5N-xSne-h70P-AzJenR
+      cephx lockbox secret      
+      cluster fsid              73126190-66a0-425d-bc7b-971b13e67210
+      cluster name              ceph
+      crush device class        
+      encrypted                 0
+      osd fsid                  22e145cd-c5d2-44bd-892e-f4bcf148b1aa
+      osd id                    0
+      osdspec affinity          
+      type                      block
+      vdo                       0
+      devices                   /dev/xvdb1
+
+```
+
+### Monitor server in CEPH cluster usage 
+
+<img src="mon11.png">
+
+### More info about Monitor map and client 
+
+<img src="mon22.png">
+
