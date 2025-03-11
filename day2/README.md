@@ -11,3 +11,9 @@
 ## Introduction to RADOS 
 
 <img src="st3.png">
+
+### Ceph is using LibRADOS to interact with RADOS platform 
+## libsRADO can be used by Developers like python , golang 
+
+<img src="st4.png">
+
